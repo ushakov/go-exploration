@@ -109,21 +109,11 @@ func (set *TileServer) GetTile(x, y, zoom int) []byte {
 
 func (set *TileServer) ServeHTTP(conn *http.Conn, req *http.Request) {
 	req.ParseForm();
+	var x, y, zoom int;
 	x, err := strconv.Atoi(req.Form["x"][0]);
-	if err != nil {
-		fmt.Println("Err:", err.String());
-		conn.WriteHeader(404);
-		return;
-	}
-	
-	y, err := strconv.Atoi(req.Form["y"][0]);
-	if err != nil {
-		fmt.Println("Err:", err.String());
-		conn.WriteHeader(404);
-		return;
-	}
+	if err == nil { y, err = strconv.Atoi(req.Form["y"][0]); }
+	if err == nil { zoom, err = strconv.Atoi(req.Form["z"][0]); }
 
-	zoom, err := strconv.Atoi(req.Form["z"][0]);
 	if err != nil {
 		fmt.Println("Err:", err.String());
 		conn.WriteHeader(404);
